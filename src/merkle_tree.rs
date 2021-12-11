@@ -530,6 +530,16 @@ impl<T: Hasher> MerkleTree<T> {
         self.current_working_tree.layers()
     }
 
+    pub fn export_tree(&self) -> Vec<T::Hash> {
+        let mut export = vec![];
+
+        for layer in self.current_working_tree.layer_nodes().iter().rev() {
+            export.extend(layer);
+        }
+
+        export
+    }
+
     /// Creates a diff from a changes that weren't committed to the main tree yet. Can be used
     /// to get uncommitted root or can be merged with the main tree
     fn uncommitted_diff(&self) -> Option<PartialTree<T>> {
