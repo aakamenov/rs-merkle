@@ -533,7 +533,7 @@ impl<T: Hasher> MerkleTree<T> {
     pub fn export_tree(&self) -> Vec<T::Hash> {
         let mut export = vec![];
 
-        for layer in self.layer().iter().rev() {
+        for layer in self.layers().iter().rev() {
             export.extend(layer);
         }
 
