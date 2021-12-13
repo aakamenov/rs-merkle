@@ -522,7 +522,7 @@ impl<T: Hasher> MerkleTree<T> {
 
     /// Returns the whole tree, where the first layer is leaves and
     /// consequent layers are nodes.
-    fn layers(&self) -> Vec<Vec<T::Hash>> {
+    pub fn layers(&self) -> Vec<Vec<T::Hash>> {
         self.current_working_tree.layer_nodes()
     }
 
@@ -533,7 +533,7 @@ impl<T: Hasher> MerkleTree<T> {
     pub fn export_tree(&self) -> Vec<T::Hash> {
         let mut export = vec![];
 
-        for layer in self.current_working_tree.layer_nodes().iter().rev() {
+        for layer in self.layer().iter().rev() {
             export.extend(layer);
         }
 
