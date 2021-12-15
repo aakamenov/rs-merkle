@@ -31,11 +31,24 @@ pub fn parent_indices(indices: &[usize]) -> Vec<usize> {
     parents
 }
 
+/// Gets the ceil of log2 without any float arithmetic
+fn wasm_safe_log2(number: usize) -> usize {
+    let mut n = number as i128;
+    let mut times: usize = 1;
+    while n > 1 {
+        n = n / 2;
+        times += 1;
+    }
+
+    times
+}
+
 pub fn tree_depth(leaves_count: usize) -> usize {
     if leaves_count == 1 {
         1
     } else {
-        (leaves_count as f64).log2().ceil() as usize
+        //(leaves_count as f64).log2().ceil() as usize
+        wasm_safe_log2(leaves_count)
     }
 }
 
