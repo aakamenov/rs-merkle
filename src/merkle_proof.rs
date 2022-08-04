@@ -228,7 +228,12 @@ impl<T: Hasher> MerkleProof<T> {
         let mut proof_layers: Vec<Vec<(usize, T::Hash)>> = Vec::with_capacity(tree_depth + 1);
         let mut proof_copy = self.proof_hashes.clone();
         for proof_indices in proof_indices_by_layers {
-            let proof_hashes = proof_copy.splice(0..proof_indices.len(), []);
+            let splice_range = 0..proof_indices.len();
+            if splice_range.end > proof_copy.len() {
+                return Err(Error::not_enough_hashes_to_calculate_root());
+            }
+
+            let proof_hashes = proof_copy.splice(splice_range, []);
             proof_layers.push(proof_indices.iter().cloned().zip(proof_hashes).collect());
         }
 
